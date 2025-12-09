@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API для любимых песен</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-top: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+        
+        .api-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #3498db;
+            background-color: #f8f9fa;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .endpoint {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .get { background-color: #2ecc71; }
+        .post { background-color: #3498db; }
+        .put { background-color: #f39c12; }
+        .delete { background-color: #e74c3c; }
+        
+        .description {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        .example {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .endpoint {
+                font-size: 0.9em;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎵 API для управления списком любимых песен</h1>
+            <p class="subtitle">Простое Express.js приложение для работы с вашей музыкальной коллекцией</p>
+        </header>
+        
+        <div class="api-section">
+            <h2>📡 Базовый URL API</h2>
+            <div class="endpoint">http://localhost:3000/api/songs</div>
+            <p class="description">Все эндпоинты для работы с песнями начинаются с этого базового URL.</p>
+        </div>
+        
+        <div class="api-section">
+            <h2>📋 Доступные методы API</h2>
+            
+            <h3>1. Получить все песни</h3>
+            <div class="endpoint">
+                <span class="method get">GET</span> /api/songs
+            </div>
+            <p class="description">Возвращает список всех песен. Поддерживает фильтрацию через query-параметры.</p>
+            <div class="example">
+                // Пример с фильтрацией по исполнителю<br>
+                GET /api/songs?artist=queen<br><br>
+                
+                // Пример с фильтрацией по жанру и году<br>
+                GET /api/songs?genre=pop&year=1982
+            </div>
+            
+            <h3>2. Получить песню по ID</h3>
+            <div class="endpoint">
+                <span class="method get">GET</span> /api/songs/{id}
+            </div>
+            <p class="description">Возвращает конкретную песню по её ID.</p>
+            <div class="example">
+                GET /api/songs/1<br>
+                // Вернет песню с ID = 1
+            </div>
+            
+            <h3>3. Добавить новую песню</h3>
+            <div class="endpoint">
+                <span class="method post">POST</span> /api/songs
+            </div>
+            <p class="description">Добавляет новую песню в список. Требует отправки JSON в теле запроса.</p>
+            <div class="example">
+                POST /api/songs<br>
+                Content-Type: application/json<br><br>
+                {
+                  "title": "Название песни",
+                  "artist": "Исполнитель",
+                  "album": "Альбом",
+                  "year": 2023,
+                  "genre": "Жанр",
+                  "duration": "3:45"
+                }
+            </div>
+            
+            <h3>4. Обновить существующую песню</h3>
+            <div class="endpoint">
+                <span class="method put">PUT</span> /api/songs/{id}
+            </div>
+            <p class="description">Обновляет информацию о песне по её ID.</p>
+            <div class="example">
+                PUT /api/songs/1<br>
+                Content-Type: application/json<br><br>
+                {
+                  "title": "Обновленное название",
+                  "artist": "Обновленный исполнитель"
+                }
+            </div>
+            
+            <h3>5. Удалить песню</h3>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span> /api/songs/{id}
+            </div>
+            <p class="description">Удаляет песню из списка по её ID.</p>
+            <div class="example">
+                DELETE /api/songs/1
+            </div>
+        </div>
+        
+        <div class="api-section">
+            <h2>🎛️ Примеры запросов с curl</h2>
+            
+            <h3>Получить все песни:</h3>
+            <div class="example">
+                curl -X GET http://localhost:3000/api/songs
+            </div>
+            
+            <h3>Добавить новую песню:</h3>
+            <div class="example">
+                curl -X POST http://localhost:3000/api/songs \<br>
+                -H "Content-Type: application/json" \<br>
+                -d '{"title": "Blinding Lights", "artist": "The Weeknd", "album": "After Hours", "year": 2019, "genre": "Pop", "duration": "3:22"}'
+            </div>
+            
+            <h3>Обновить песню:</h3>
+            <div class="example">
+                curl -X PUT http://localhost:3000/api/songs/1 \<br>
+                -H "Content-Type: application/json" \<br>
+                -d '{"title": "Новое название", "artist": "Новый исполнитель"}'
+            </div>
+        </div>
+        
+        <div class="note">
+            <h3>📝 Примечания:</h3>
+            <ul style="margin-left: 20px;">
+                <li>Все данные сохраняются в файле <code>data/songs.json</code></li>
+                <li>При перезапуске сервера изменения сохраняются</li>
+                <li>Для POST и PUT запросов обязательно использовать <code>Content-Type: application/json</code></li>
+                <li>Сервер автоматически логирует все запросы в консоль</li>
+                <li>Доступны фильтры: <code>?artist=...</code>, <code>?genre=...</code>, <code>?year=...</code></li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>Express.js приложение для управления списком любимых песен</p>
+            <p>Для тестирования API используйте Postman, curl или любой другой HTTP-клиент</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Простой клиентский JavaScript для демонстрации
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Добро пожаловать в API для управления любимыми песнями!');
+            console.log('Для работы с API используйте:');
+            console.log('1. Получить все песни: GET http://localhost:3000/api/songs');
+            console.log('2. Добавить песню: POST http://localhost:3000/api/songs');
+        });
+    </script>
+</body>
+</html>
